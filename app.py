@@ -10,9 +10,7 @@ from backend.settings import basedir
 
 
 
-    
-
-#check_fiel
+#check_file
 LOG_DIR=os.path.join(os.path.abspath(basedir),'logs')
 if not os.path.exists( LOG_DIR):
     os.makedirs( LOG_DIR)
