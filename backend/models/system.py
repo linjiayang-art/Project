@@ -1,5 +1,5 @@
 from backend.core.extensions import db
-from flask_login import UserMixin
+#from flask_login import UserMixin
 from sqlalchemy import Column,String,Integer,Text,Boolean, DateTime,BigInteger
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -10,7 +10,7 @@ class BasicMode():
     last_modification_time=Column(DateTime)
     is_deleted=Column(Boolean,default=False)
 
-class UserInfo(db.Model,UserMixin,BasicMode):
+class UserInfo(db.Model,BasicMode):
     __tablename__='user_info'
     id=Column(Integer,primary_key=True)
     userno=Column(String(255))

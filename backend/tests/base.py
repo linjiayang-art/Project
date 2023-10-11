@@ -27,8 +27,23 @@ class BaseTestCase(unittest.TestCase):
             password='123'
 
         return self.client.post(
-            url_for('auth.login'),
+            url_for('api_v1.token'),
             data=dict(username=username,password=password),
             follow_redirects=True
             )
+    def get_oauth_token(self):
+        response = self.client.post(
+            url_for('api_v1.token'),
+            data=dict(
+            username='linyang',
+            password='123'
+            ) )
+        data=response.get_json()
+        return data['access_token']
     
+    def set_auth_headers(self,token):
+        return {
+            'Authorization':'Bearer'+token,
+            'Accept':'application/json',
+            'Content-Type':'application/json'
+        }
