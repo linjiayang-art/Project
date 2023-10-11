@@ -12,5 +12,8 @@ class AdminTestCase(BaseTestCase):
     def test_api_index(self):
         response=self.client.get(url_for('api_v1.index'))
         data=response.get_json()
-        print(data)
         self.assertEqual(data['api_version'],'1.0')
+        self.get_oauth_token()
+
+    def test_get_menus(self):
+        pass

@@ -1,1 +1,1 @@
-from . import test_admin,base
+from . import test_admin,base,test_basic

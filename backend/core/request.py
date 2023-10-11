@@ -6,9 +6,9 @@ def register_request_handlers(app):
     def query_profiler(response):
         for q in get_recorded_queries():
             if q.duration >=app.config['BACKEND_SLOW_QUERY_THRESHOLD']:
-                app.logger.waring(
+                app.logger.warning(
                     'Slow query: Duration'
-                    f'{q.duration:f}s\n Context:{q.context}\nQuery:{q.statement}\n'
+                    f'{q.duration:f}s\n Context:{q.location}\nQuery:{q.statement}\n'
                 )
         return response
 #before request record 
