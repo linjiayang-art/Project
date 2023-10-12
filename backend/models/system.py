@@ -9,6 +9,9 @@ class BasicMode():
     create_date=Column(DateTime,default=datetime.utcnow)
     last_modification_time=Column(DateTime)
     is_deleted=Column(Boolean,default=False)
+    def to_dict(self):
+        # 使用字典推导式将对象属性转化为字典
+        return {column.name: getattr(self, column.name) for column in self.__table__.columns}
 
 class UserInfo(db.Model,BasicMode):
     __tablename__='user_info'
@@ -19,6 +22,7 @@ class UserInfo(db.Model,BasicMode):
     email=Column(String(255))
     
 
+    
     def __str__(self) -> str:
         return self.email
 
@@ -47,6 +51,20 @@ class Menu(db.Model,BasicMode):
     menu_perm = Column(String(80))
     menu_sort = Column(BigInteger)
 
+    @property
+    def menu_dict(self)->dict:
+        return {
+            'id':self.id,
+            'parent_id':self.parent_id,
+            'menu_path':self.menu_path,
+            'component':self.component,
+            'redirect_url':self.redirect_url,
+            'menu_name':self.menu_name,
+            'menu_icon':self.menu_icon,
+            'menu_type':self.menu_type,
+            'menu_visible':self.menu_visible,
+            'menu_perm':self.menu_perm
+        }
 
 class SYSRole(db.Model,BasicMode):
     __tablename__='sys_role'

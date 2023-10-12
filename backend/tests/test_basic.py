@@ -20,7 +20,7 @@ class BasicTestCase(BaseTestCase):
     '''def test_401_error(self):
         response=self.client.get('/foo')
         data=response.get_data(as_text=True)
-        self.assertEqual(response.status_code,404)
+        self.assertEqual(response.status_code,401)
         print(data)
         self.assertIn(  data['msg'],'The requested URL was not found on the server.')'''
         

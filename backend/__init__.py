@@ -32,7 +32,8 @@ def create_app(config_name):
 
 
     #register
-    register_errors(app=app)
+    if app.debug==False:
+        register_errors(app=app)
     register_logging(app=app)
     register_request_handlers(app=app)  
 
