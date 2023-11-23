@@ -65,6 +65,22 @@ class Menu(db.Model,BasicMode):
             'menu_visible':self.menu_visible,
             'menu_perm':self.menu_perm
         }
+    @property
+    def router_dict(self) -> dict:
+        return {
+            "path": self.menu_path,
+            "component": self.component,
+            "redirect": self.redirect_url,
+            "name": self.menu_path,
+            "meta": {
+                "title": self.menu_name,
+                "icon": self.menu_icon,
+                "hidden":self.menu_visible,
+                "roles": ["ADMIN", "USER","PDUSER","RDUSER","ITUSER","FEUSER","QAUSER"],
+                "keepAlive": True
+            }
+        }
+
 
 class SYSRole(db.Model,BasicMode):
     __tablename__='sys_role'

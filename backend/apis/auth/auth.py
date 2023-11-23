@@ -21,7 +21,7 @@ def generate_token(user):
 def validate_token(token):
     s=Serializer(current_app.config['SECRET_KEY'])
     try:
-        data=s.loads(token,max_age=3600)
+        data=s.loads(token,max_age=360000)
     except (BadSignature,SignatureExpired):
         return False
     user=db.session.get(UserInfo,data['id'])

@@ -4,6 +4,7 @@ from wtforms.validators import DataRequired, length, NumberRange,ValidationError
 
 
 class MenuFrom(FlaskForm):
+    id = IntegerField('id')
     parent_id = IntegerField('parent_id')
     menu_name = StringField('menu_name', validators=[DataRequired()])
     menu_type = StringField('menu_type', validators=[DataRequired()])
