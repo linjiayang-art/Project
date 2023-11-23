@@ -6,9 +6,9 @@ from flask import request
 from flask.logging import default_handler
 
 from backend.settings import basedir
+from flask import Flask
 
-
-def register_logging(app):
+def register_logging(app:Flask):
     class RequestFormartter(logging.Formatter):
 
         def format(self,record):

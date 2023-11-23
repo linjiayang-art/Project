@@ -7,7 +7,6 @@ from backend.core.extensions import db
 from backend.apis.auth.errors import api_abort, invalid_token, token_missing
 
 
-
 #创建token
 def generate_token(user):
     expiration=3600

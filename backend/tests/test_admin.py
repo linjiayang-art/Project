@@ -57,3 +57,6 @@ class AdminTestCase(BaseTestCase):
         data=response.get_json()
         self.assertEqual(data['code'],200)
         pass
+    
+    def test_add_menus(self):
+        pass
