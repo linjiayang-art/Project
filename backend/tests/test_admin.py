@@ -58,13 +58,16 @@ class AdminTestCase(BaseTestCase):
         self.fake_data()
         response = self.client.get(url_for('api_v1.menus'))
         data = response.get_json()
-        self.assertEqual(data['code'], 200)
+        self.assertEqual(data['code'], 'A230')
         pass
 
     def test_add_menus(self):
+        token=self.get_oauth_token()
         response = self.client.post(url_for('api_v1.menus'), json=dict(
             id=5, parent_id=0,menu_path='/system',component='Layout', redirect_url='/test',
             menu_name='测试页',menu_icon='test', menu_type='MENU',menu_visible=0,
-            menu_sort=4,menu_perm='perm'))
+            menu_sort=4,menu_perm='perm'),headers=self.set_auth_headers(token=token) )
+
         data = response.get_json()
+
         self.assertIn('新增成功', data['msg'])

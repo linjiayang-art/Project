@@ -44,7 +44,7 @@ class BaseTestCase(unittest.TestCase):
 
     def set_auth_headers(self, token):
         return {
-            'Authorization': 'Bearer'+token,
+            'Authorization': 'Bearer '+token,
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         }
