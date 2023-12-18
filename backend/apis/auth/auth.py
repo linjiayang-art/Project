@@ -77,7 +77,6 @@ def auth_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         token_type, token = get_token()
-       
         # Flask normally handles OPTIONS requests on its own, but in the
         # case it is configured to forward those to the application, we
         # need to ignore authentication headers and let the request through
