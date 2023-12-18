@@ -5,9 +5,9 @@ from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 
 class BasicMode():
-    create_user=Column(String(255))
+    create_user=Column(String(255),default='system')
     create_date=Column(DateTime,default=datetime.utcnow)
-    last_modification_time=Column(DateTime)
+    last_modification_time=Column(DateTime,default=datetime.utcnow)
     is_deleted=Column(Boolean,default=False)
     def to_dict(self):
         # 使用字典推导式将对象属性转化为字典
@@ -82,24 +82,24 @@ class Menu(db.Model,BasicMode):
         }
 
 
-class SYSRole(db.Model,BasicMode):
+class SysRole(db.Model,BasicMode):
     __tablename__='sys_role'
     id = Column(Integer, primary_key=True)
-    rolename =Column(String(50))
+    role_name =Column(String(50))
     code = Column(String(50))
     sort = Column(String(50))
     rolestatus = Column(String(50))
 
 class SysRoleMenu(db.Model,BasicMode):
     __tablename__ = 'sys_role_menu'
-    id = Column(BigInteger, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     # relationship
     role_id = Column(BigInteger)
     menu_id = Column(BigInteger)
 
 class SysUserRole(db.Model,BasicMode):
     __tablename__ = 'sys_user_role'
-    id = Column(BigInteger, primary_key=True)
+    id = Column(Integer, primary_key=True)
     # relationship
     user_id = Column(BigInteger)
     role_id = Column(BigInteger)

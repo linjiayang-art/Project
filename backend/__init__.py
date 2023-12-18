@@ -3,7 +3,7 @@ from flask import Flask
 import os
 from backend.core.extensions import db,csrf,mail
 #.core 
-#from backend.core.commands import register_commands
+from backend.core.commands import register_commands
 from backend.core.errors import register_errors
 from backend.core.logging import register_logging
 from backend.core.request import register_request_handlers
@@ -34,6 +34,7 @@ def create_app(config_name):
     #register
     if app.debug==False:
         register_errors(app=app)
+    register_commands(app=app)
     register_logging(app=app)
     register_request_handlers(app=app)  
 
