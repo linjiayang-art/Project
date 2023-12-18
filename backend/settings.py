@@ -12,7 +12,7 @@ else:
 
 class BaseConfig:
     #APP KEY
-    SECRET_KEY=os.getenv('SECRET_KEY','dev key')
+    SECRET_KEY=os.getenv('SECRET_KEY','\x1d\r\xc9\x8b(B\x98\x8c\xf9\x0c\na')
     #
     DEBUG_TB_INTERCEPT_REDIRECTS=False
     DEBUG_TB_ENABLED=False
