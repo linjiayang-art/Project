@@ -5,7 +5,7 @@
 my_folder/
 logs/
 uploads/
-
+venv/
 
 # 使用通配符忽略特定文件类型
 #*.txt

@@ -6,12 +6,24 @@ from sqlalchemy import select, Result, Tuple
 from backend.core.extensions import db
 from sqlalchemy.orm import class_mapper
 from backend.apis.auth.auth import auth_required
+from backend.factorys.requersfactorys  import query_factory
+
+class UserInfosAPI(MethodView):
+    decorators=[auth_required]
+    def get(self):
+        page=request.args.get('page',1,type=int)
+        users=select(UserInfo).filter_by(isdeleted=0)
+        user_results=db.paginate(
+
+        )
 
 
 class UserAPI(MethodView):
-    decorators = [auth_required]
+    #decorators = [auth_required]
 
     def get(self):
+        results=query_factory(UserInfo,request=request)
+        return jsonify(code=200,msg='ok',data=results)
         page = request.args.get('page', 1, type=int)
 
         per_page = current_app.config['BACKEND_POST_PER_PAGE']
