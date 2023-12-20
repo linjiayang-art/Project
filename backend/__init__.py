@@ -8,6 +8,7 @@ from backend.core.errors import register_errors
 from backend.core.logging import register_logging
 from backend.core.request import register_request_handlers
 from backend.settings import basedir
+from backend.blueprints.fileserver import file_bp
 
 #settings
 from backend.settings import config
@@ -29,7 +30,7 @@ def create_app(config_name):
 
     #blueprints
     app.register_blueprint(api_v1,url_prefix='/api/v1')
-
+    app.register_blueprint(file_bp,url_prefix='/file')
 
     #register
     if app.debug==False:

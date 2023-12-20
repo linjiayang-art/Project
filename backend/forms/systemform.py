@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, DateField, DateTimeField, SelectMultipleField, SubmitField, FieldList, IntegerField, validators
+from wtforms import StringField, DateField, FileField,DateTimeField, SelectMultipleField, SubmitField, FieldList, IntegerField, validators
 from wtforms.validators import DataRequired, length, NumberRange,ValidationError
-
+from flask_wtf.file import FileRequired, FileAllowed
 
 class MenuFrom(FlaskForm):
     id = IntegerField('id')
@@ -18,3 +18,6 @@ class MenuFrom(FlaskForm):
     def validate_parent_id(form,field):
         if field.data is None:
             raise ValidationError(' must parent_id ')
+        
+class UplaodForm(FlaskForm):
+    file=FileField('file',validators=[FileRequired(),FileAllowed(['jpg','png','gif','jpeg','txt','xlsx','xls'])])

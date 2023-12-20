@@ -28,6 +28,8 @@ class BaseConfig:
     MAID_DEFAULT_SENDER=f'BackEnd <{MAIL_USERNAME}>'
 
     BACKEND_ADMIN_EMAIL=os.getenv('BACKEND_ADMIN_MAIL')
+    
+
 
     #QUERT PAGE
     BACKEND_POST_PER_PAGE=10
@@ -35,8 +37,13 @@ class BaseConfig:
     BACKEND_COMMENT_PER_PAGE=15
 
     #UPLOAD
-    BACKEND_UPLOAD_PATH=os.path.join(basedir,'uploads')
+     #最大文件限制
+    UPLOAD_PATH=os.path.join(basedir,'uploads')
+   
+
+    MAX_CONTENT_LENGTH=20*1024*1024
     BACKEND_ALLOWED_IMAGE_EXTENSIONS=['png','jpg','jpeg','gif']
+
 
 class DevelopmentConfig(BaseConfig):
     SQLALCHEMY_DATABASE_URI = prefix + os.path.join(basedir, 'data-dev.db')

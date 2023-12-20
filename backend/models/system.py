@@ -105,3 +105,21 @@ class SysUserRole(db.Model,BasicMode):
     role_id = Column(BigInteger)
 
 
+class DictType(db.Model, BasicMode):
+    __tablename__ = 'sys_dict_type'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50))
+    code = db.Column(db.String(50))
+    status = db.Column(db.Boolean, default=True)
+    remark = db.Column(db.String(50))
+
+
+
+class DictItem(db.Model, BasicMode):
+    __tablename__ = 'sys_dict_item'
+    id = db.Column(db.Integer, primary_key=True)
+    type_code = db.Column(db.String(50))
+    type_id = db.Column(db.String(50))
+    name = db.Column(db.String(50))
+    value = db.Column(db.String(50))
+    status = db.Column(db.Boolean, default=True)
