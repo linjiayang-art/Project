@@ -80,9 +80,6 @@ class MenusAPI(MethodView):
         for i in form_data:
             if i.data is not None:
                 menu_dict[i.name] = i.data
-
-        menu_dict['id'] = 5
-
         menu = Menu(**menu_dict)
         menu_check = db.session.execute(
             select(Menu).filter_by(**menu_dict)).scalar()

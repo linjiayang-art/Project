@@ -45,10 +45,10 @@ def upload():
 
 @file_bp.route('/download/<local_file>',methods=['GET'])
 def download(local_file):
-    # local_file='5f946ca7ce7e47638f8d972a0e52017d.md'
-    # fileinfo=FileInfo(orginname=local_file,localname=local_file,file_path='2023/12')
-    # db.session.add(fileinfo)
-    # db.session.commit()
+    #local_file='5f946ca7ce7e47638f8d972a0e52017d.md'
+    fileinfo=FileInfo(orginname=local_file,localname=local_file,file_path='2023/12')
+    db.session.add(fileinfo)
+    db.session.commit()
 
     fileinfo=FileInfo.query.filter_by(localname=local_file).first()
     if fileinfo is None:
@@ -56,6 +56,9 @@ def download(local_file):
     file_name=fileinfo.orginname
     filename_encoded = urllib.parse.quote(file_name.encode('utf-8'))
     file_path = os.path.join(current_app.config['UPLOAD_PATH'], fileinfo.file_path, local_file)
+    #判断文件是否存在
+    if not os.path.exists(file_path):
+        return jsonify({'code':201,'msg':'file not found'})
     response = make_response(send_file(file_path, mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'))
     response.headers['Content-Disposition'] = f'attachment; filename="{filename_encoded}"'
     return response

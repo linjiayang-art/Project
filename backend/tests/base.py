@@ -3,8 +3,8 @@ from backend import create_app
 from backend.core.extensions import db
 from flask import url_for
 from backend.models.system import UserInfo
-
-
+import os
+import shutil
 class BaseTestCase(unittest.TestCase):
     def setUp(self):
         app = create_app('testing')
@@ -20,6 +20,11 @@ class BaseTestCase(unittest.TestCase):
 
     def tearDown(self):
         db.drop_all()
+        #删除上传文件
+        basedir=os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
+        folder_path = os.path.join( basedir,'backend/uploads') 
+        if os.path.exists('folder_path '):
+            shutil.rmtree(folder_path)
         self.context.pop()
 
     def login(self, username=None, password=None):
