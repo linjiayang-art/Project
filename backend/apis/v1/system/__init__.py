@@ -7,6 +7,17 @@ from backend.core.extensions import db, csrf
 from backend.apis.auth.auth import generate_token, auth_required
 from flask_wtf.csrf import generate_csrf
 from backend.forms.systemform import MenuFrom
+from apispec import APISpec
+
+# spec=APISpec(
+#     title='my-project',
+#     version='1.0.0',
+#     openapi_version='3.0.2',
+#     info=dict(description="A minimal gist API"),
+# )
+
+# spec.components.schema('User',schema=UserInfo)
+
 
 
 class IndexAPI(MethodView):
@@ -17,6 +28,11 @@ class IndexAPI(MethodView):
             "api_base_url": "http://example.com/api/v1",
 
         })
+
+# with current_app.test_request_context():
+#     spec.path(view='api_v1.index')
+# print(dict(spec.to_dict()["paths"]["/api_v1.index"]))
+
 
 
 class TokenAPI(MethodView):
