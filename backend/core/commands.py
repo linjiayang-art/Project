@@ -29,7 +29,7 @@ def register_commands(app):
     def fake(category, post, comment, reply):
         """Generate fake data."""
         from backend.fakes import fake_admin, fake_menu, fake_role_menu,\
-            fake_role,fake_user_role
+            fake_role,fake_user_role,fake_customer_info
 
         db.drop_all()
         db.create_all()
@@ -49,3 +49,5 @@ def register_commands(app):
 
         fake_user_role()
         click.echo(f'fake_user_role')
+        fake_customer_info()
+        click.echo(f'fake_customer_info')
