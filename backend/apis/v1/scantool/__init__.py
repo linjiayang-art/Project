@@ -3,7 +3,7 @@ from  backend.apis.v1 import api_v1
 from flask.views import MethodView  # import MethodView Class
 
 
-from backend.schemas.scantools import CustomerInfoSchema
+from backend.schemas.scantools import CustomerInfoSchema,CheckResultSchema
 from backend.core.extensions import db,csrf
 from backend.apis.auth.auth import auth_required
 from backend.models.scantool import  CustomerInfo,CheckLot
@@ -25,50 +25,50 @@ class CustomerAPI(MethodView):
         if agent is  not None:
             custom=custom.filter(CustomerInfo.agent.like(f'%{agent}%') )
         custom=custom.filter_by(isDeleted=False)
-        res=db.session.execute(custom).all()
+        res=db.session.execute(custom).scalars()
         result=[]
         for i in res:
-            
             customer=CustomerInfoSchema()
-            cus=customer.dump(i[0])
+            cus=customer.dump(i)
             result.append(cus)
         return jsonify(code='200',msg='获取客户数据成功',data=result)
-    # def post(self):
-    #     formdata=CustomerForm()
-    #     agent,chipNo,customerNo=formdata.agent.data,formdata.chipNo.data,formdata.customerNo.data
-    #     userinfo= g.current_user
-    #     userid=userinfo.userid
-    #     cus=db.session.execute(select(CustomerInfo).filter_by(agent=agent,chipNo=chipNo,customerNo=customerNo)).scalar()
-    #     if cus is not None and cus.isDeleted==False:
-    #         return jsonify(code='201',msg='已存在相同数据',data='已存在相同数据')
-    #     cus=CustomerInfo(agent=agent,chipNo=chipNo,customerNo=customerNo,createUser=userid)
-    #     db.session.add(cus)
-    #     db.session.commit()
-    #     return jsonify(code='200',msg='新增成功',data='新增成功')
-    # def delete(self):
-    #     id=request.args.get('id')
-    #     cus=CustomerInfo.query.filter_by(id=id).first()
-    #     if cus is None:
-    #         return jsonify(code='201',msg='删除失败,未查询到改数据',data='删除失败')
-    #     if cus.isDeleted==True:
-    #         return jsonify(code='201',msg='删除失败,该数据已经删除',data='删除失败')
-    #     cus.isDeleted=True
-    #     db.session.commit()
-    #     return jsonify(code='200',msg='删除成功',data=1)
-    # def put(self):
-    #     chipNo=request.args.get('chipNo',None)
-    #     customerNo=request.args.get('customerNo',None)
-    #     agent=request.args.get('agent',None)
-    #     id=request.args.get('id',None)
-    #     cus=db.session.execute(select(CustomerInfo).filter_by(id=id)).scalar()
-    #     if cus is None:
-    #          return jsonify(code='201',msg='错误,未获取到改数据',data='新增成功')
-    #     cus.chipNo=chipNo
-    #     cus.agent=agent
-    #     cus.customerNo=customerNo
-    #     db.session.commit()
+    def post(self):
+        formdata:dict=request.get_json()
+        agent,chipNo,customerNo=formdata.get('agent',None),formdata.get('chipNo',None),formdata.get('customerNo',None)
+        # userinfo= g.current_user
+        # userid=userinfo.userid
+        userid='admin'
+        cus=db.session.execute(select(CustomerInfo).filter_by(agent=agent,chipNo=chipNo,customerNo=customerNo)).scalar()
+        if cus is not None and cus.isDeleted==False:
+            return jsonify(code='201',msg='已存在相同数据',data='已存在相同数据')
+        cus=CustomerInfo(agent=agent,chipNo=chipNo,customerNo=customerNo,createUser=userid)
+        db.session.add(cus)
+        db.session.commit()
+        return jsonify(code='200',msg='新增成功',data='新增成功')
+    def delete(self):
+        id=request.args.get('id')
+        cus=CustomerInfo.query.filter_by(id=id).first()
+        if cus is None:
+            return jsonify(code='201',msg='删除失败,未查询到改数据',data='删除失败')
+        if cus.isDeleted==True:
+            return jsonify(code='201',msg='删除失败,该数据已经删除',data='删除失败')
+        cus.isDeleted=True
+        db.session.commit()
+        return jsonify(code='200',msg='删除成功',data=1)
+    def put(self):
+        chipNo=request.args.get('chipNo',None)
+        customerNo=request.args.get('customerNo',None)
+        agent=request.args.get('agent',None)
+        id=request.args.get('id',None)
+        cus=db.session.execute(select(CustomerInfo).filter_by(id=id)).scalar()
+        if cus is None:
+             return jsonify(code='201',msg='错误,未获取到改数据',data='新增成功')
+        cus.chipNo=chipNo
+        cus.agent=agent
+        cus.customerNo=customerNo
+        db.session.commit()
 
-    #     return jsonify(code='200',msg='修改成功',data='修改成功')
+        return jsonify(code='200',msg='修改成功',data='修改成功')
 
 class PackageCheckLot(MethodView):
     decorators=[csrf.exempt]
@@ -203,34 +203,34 @@ class PackageCheckBox(MethodView):
         db.session.commit()
         return jsonify(code='200',msg='比对成功',data='success',statusText='比对成功')
 
-# class PackageResult(MethodView):
-#     decorators=[auth_required]
-#     def get(self):
-#         producttype=request.args.get('producttype','')
-#         checktype=request.args.get('checktype','')
-#         lotno=request.args.get('lotno','')
-#         pages=int(request.args.get('pages',1))
-#         results=[]
-#         checklot=select(CheckLot)
-#         if  producttype != '':
-#             checklot=checklot.filter(CheckLot.producttype.like(f'%{producttype}%'))
-#         if  checktype != '':
-#             checklot=checklot.filter(CheckLot.checktype.like(f'%{checktype}%'))
-#         if  lotno != '':
-#             checklot=checklot.filter(CheckLot.lotno.like(f'%{lotno}%'))
-#         checklot= checklot.filter_by(isdeleted=False).order_by(CheckLot.id.desc())
-#         result=db.paginate(
-#         checklot,
-#         page=pages,
-#         error_out=False,
-#         per_page=15)
-#         for i in result:
-#             r=to_dict(i)
-#             r=update_date_formart(r)
-#             results.append(r)
-#         return jsonify(code='200',msg='获取数据成功',data=results)
+class PackageResult(MethodView):
+    #decorators=[auth_required]
+    def get(self):
+        producttype=request.args.get('producttype','')
+        checktype=request.args.get('checktype','')
+        lotno=request.args.get('lotno','')
+        pages=int(request.args.get('pages',1))
+        results=[]
+        checklot=select(CheckLot)
+        if  producttype != '':
+            checklot=checklot.filter(CheckLot.producttype.like(f'%{producttype}%'))
+        if  checktype != '':
+            checklot=checklot.filter(CheckLot.checktype.like(f'%{checktype}%'))
+        if  lotno != '':
+            checklot=checklot.filter(CheckLot.lotno.like(f'%{lotno}%'))
+        checklot= checklot.filter_by(isdeleted=False).order_by(CheckLot.id.desc())
+        result=db.paginate(
+        checklot,
+        page=pages,
+        error_out=False,
+        per_page=15)
+        checkresult=CheckResultSchema()
+        for i in result:
+            r=checkresult.dump(i)
+            results.append(r)
+        return jsonify(code='200',msg='获取数据成功',data=results)
 
 api_v1.add_url_rule('/customer',view_func=CustomerAPI.as_view('customer'),methods=['GET','POST','PUT','DELETE'])
 api_v1.add_url_rule('/packagechecklot',view_func=PackageCheckLot.as_view('packagechecklot'),methods=['GET','POST'])
 api_v1.add_url_rule('/packagecheckbox',view_func=PackageCheckBox.as_view('packagecheckbox'),methods=['POST'])
-# api_v1.add_url_rule('/packageresult',view_func=PackageResult.as_view('packageresult'),methods=['GET'])
+api_v1.add_url_rule('/packageresult',view_func=PackageResult.as_view('packageresult'),methods=['GET'])

@@ -9,3 +9,15 @@ class CustomerInfoSchema(Schema):
     customerNo = fields.String(required=True)
     id = fields.String(required=True)
     isDeleted = fields.String(required=True)
+
+
+class CheckResultSchema(Schema):
+    check_data = fields.String(required=True)
+    checktype = fields.String(required=True)
+    create_data = fields.String(required=True)
+    id = fields.String(required=True)
+    isdeleted = fields.String(required=True)
+    lotno = fields.String(required=True)
+    producttype = fields.String(required=True)
+    tape_num = fields.String(required=True)
+    unit_qty = fields.String(required=True)

@@ -80,6 +80,7 @@ def fake_role_menu():
 
 
 def fake_customer_info():
+    
     data=[
         {
             "agent": "亚美斯通",
@@ -548,8 +549,16 @@ def fake_customer_info():
             "customerNo": "/",
             "id": 65,
             "isDeleted": False
-        }
-    ]
+        },
+        {
+            "agent": "深圳市博智航电子科技有限公司",
+            "chipNo": "SIM195SP2C",
+            "createData": "Wed, 28 Feb 2024 07:13:17 GMT",
+            "createUser": "5230E839-8491-4AFD-8C97-46F72906A47A",
+            "customerNo": "99127143",
+            "id": 68,
+            "isDeleted": False
+        }]
     for i in data:
         cus=CustomerInfo(
             agent=i['agent'],
